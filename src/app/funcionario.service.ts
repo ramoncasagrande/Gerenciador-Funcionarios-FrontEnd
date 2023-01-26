@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Funcionario } from './funcionario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FuncionarioService {
-  private apiServeUrl = '';
+  private apiServeUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) { }
 
