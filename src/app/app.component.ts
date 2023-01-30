@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Funcionario } from './funcionario';
 import { FuncionarioService } from './funcionario.service';
 
@@ -26,6 +27,19 @@ export class AppComponent implements OnInit {
         alert(error.message);
       }
     )
+  }
+
+  public adicionaFuncionario(adicionaForm: NgForm): void {
+    document.getElementById('add-employee-form')?.click();
+    this.funcionarioService.adicionaFuncionarios(adicionaForm.value).subscribe(
+      (response: Funcionario) => {
+        console.log(response);
+        this.buscaFuncionarios();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    );
   }
 
   public chamaAdicionarModal(): void {
