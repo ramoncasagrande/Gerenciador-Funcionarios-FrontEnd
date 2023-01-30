@@ -11,6 +11,7 @@ import { FuncionarioService } from './funcionario.service';
 })
 export class AppComponent implements OnInit {
   public funcionarios: Funcionario[] = [];
+  public funcionarioEditado: Funcionario | undefined;
 
   constructor(private funcionarioService: FuncionarioService){}
 
@@ -32,6 +33,21 @@ export class AppComponent implements OnInit {
   public adicionaFuncionario(adicionaForm: NgForm): void {
     document.getElementById('add-employee-form')?.click();
     this.funcionarioService.adicionaFuncionarios(adicionaForm.value).subscribe(
+      (response: Funcionario) => {
+        console.log(response);
+        this.buscaFuncionarios();
+        adicionaForm.reset;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+        adicionaForm.reset;
+      }
+    );
+  }
+
+  public editaFuncionario(funcionario: Funcionario): void {
+    
+    this.funcionarioService.atualizaFuncionarios(funcionario).subscribe(
       (response: Funcionario) => {
         console.log(response);
         this.buscaFuncionarios();
@@ -59,10 +75,9 @@ export class AppComponent implements OnInit {
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
-    if (mode === 'adicionar'){
-      button.setAttribute('data-target', '#adicionarModal');
-    }
+    
     if (mode === 'editar'){
+      this.funcionarioEditado = funcionario;
       button.setAttribute('data-target', '#editarModal');
     }
     if (mode === 'excluir'){

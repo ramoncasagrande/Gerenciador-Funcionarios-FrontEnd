@@ -96,17 +96,40 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ediatr</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <form #editaForm="ngForm">
+          <div class="form-group">
+             <label for="name">Nome</label>
+             <input type="text" ngModel="{{funcionarioEditado?.nome}}" name="nome" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
+          </div>
+          <input type="hidden" ngModel="{{funcionarioEditado?.id}}" name="id" class="form-control" id="id">
+          <input type="hidden" ngModel="{{funcionarioEditado?.codigoRegistro}}" name="codigoRegistro" class="form-control" id="userCode">
+          <div class="form-group">
+             <label for="email">Endereço de E-mail</label>
+             <input type="email" ngModel="{{funcionarioEditado?.email}}" name="email" class="form-control" id="email" placeholder="E-mail">
+          </div>
+          <div class="form-group">
+             <label for="phone">Cargo</label>
+             <input type="text" ngModel="{{funcionarioEditado?.cargo}}" name="cargo" class="form-control" id="jobTitle" placeholder="Cargo">
+          </div>
+          <div class="form-group">
+             <label for="phone">Telefone</label>
+             <input type="text" ngModel="{{funcionarioEditado?.telefone}}" name="telefone" class="form-control" id="phone" placeholder="Telefone">
+          </div>
+          <div class="form-group">
+             <label for="phone">URL da Imagem</label>
+             <input type="text" ngModel="{{funcionarioEditado?.imagemUrl}}" name="imagemUrl" class="form-control" id="imageUrl" placeholder="Imagem URL">
+          </div>
+          <div class="modal-footer">
+             <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fechar</button>
+             <button (click)="editaFuncionario(editaForm.value)" data-dismiss="modal" class="btn btn-primary" >Atualizar</button>
+          </div>
+       </form>
       </div>
     </div>
   </div>
