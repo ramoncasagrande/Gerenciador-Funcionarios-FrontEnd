@@ -11,7 +11,8 @@ import { FuncionarioService } from './funcionario.service';
 })
 export class AppComponent implements OnInit {
   public funcionarios: Funcionario[] = [];
-  public funcionarioEditado: Funcionario | undefined;
+  public funcionarioEditado: Funcionario | any;
+  public funcionarioId: number = 0;
 
   constructor(private funcionarioService: FuncionarioService){}
 
@@ -46,9 +47,20 @@ export class AppComponent implements OnInit {
   }
 
   public editaFuncionario(funcionario: Funcionario): void {
-    
     this.funcionarioService.atualizaFuncionarios(funcionario).subscribe(
       (response: Funcionario) => {
+        console.log(response);
+        this.buscaFuncionarios();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    );
+  }
+
+  public excluiFuncionario(funcionarioId: number): void {
+    this.funcionarioService.excluiFuncionarios(funcionarioId).subscribe(
+      (response: void) => {
         console.log(response);
         this.buscaFuncionarios();
       },
@@ -81,6 +93,7 @@ export class AppComponent implements OnInit {
       button.setAttribute('data-target', '#editarModal');
     }
     if (mode === 'excluir'){
+      this.funcionarioId = funcionario.id;
       button.setAttribute('data-target', '#excluirModal');
     }
     container?.appendChild(button);
