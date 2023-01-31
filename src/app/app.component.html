@@ -12,7 +12,7 @@
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <input type="search" ngModel name="key" id="searchName" class="form-control mr-sm-2"
+      <input type="search" (ngModelChange)="buscaFuncionario(palavraChave.value)" #palavraChave="ngModel" ngModel name="key" id="searchName" class="form-control mr-sm-2"
         placeholder="Buscar Funcionários..." required>
     </form>
   </div>
@@ -146,10 +146,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Tem certeza que deseja excluir?</p>
+        <p>Tem certeza que deseja excluir {{funcionarioExcluido?.nome}}?</p>
            <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-              <button (click)="excluiFuncionario(funcionarioId)" class="btn btn-danger" data-dismiss="modal">Sim</button>
+              <button (click)="excluiFuncionario(funcionarioExcluido?.id)" class="btn btn-danger" data-dismiss="modal">Sim</button>
            </div>
       </div>
     </div>
@@ -157,7 +157,7 @@
 </div>
 
 <!-- Notificação não encontrado -->
-<div class="col-lg-12 col-md-12 col-xl-12">
+<div *ngIf="funcionarios?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
   <div class="alert alert-info" role="alert">
     <h4 class="alert-heading">Ops!</h4>
     <p>Funcionário não encontrado.</p>

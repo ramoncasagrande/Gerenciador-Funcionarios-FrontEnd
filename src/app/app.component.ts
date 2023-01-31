@@ -12,15 +12,16 @@ import { FuncionarioService } from './funcionario.service';
 export class AppComponent implements OnInit {
   public funcionarios: Funcionario[] = [];
   public funcionarioEditado: Funcionario | any;
-  public funcionarioId: number = 0;
+  public funcionarioExcluido: Funcionario | any;
+  public palavraChave: string | any;
 
   constructor(private funcionarioService: FuncionarioService){}
 
   ngOnInit() {
-      this.buscaFuncionarios();
+      this.listaFuncionarios();
   }
 
-  public buscaFuncionarios(): void {
+  public listaFuncionarios(): void {
     this.funcionarioService.listaFuncionarios().subscribe(
       (response: Funcionario[]) => {
         this.funcionarios = response;
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
     this.funcionarioService.adicionaFuncionarios(adicionaForm.value).subscribe(
       (response: Funcionario) => {
         console.log(response);
-        this.buscaFuncionarios();
+        this.listaFuncionarios();
         adicionaForm.reset;
       },
       (error: HttpErrorResponse) => {
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
     this.funcionarioService.atualizaFuncionarios(funcionario).subscribe(
       (response: Funcionario) => {
         console.log(response);
-        this.buscaFuncionarios();
+        this.listaFuncionarios();
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
@@ -62,12 +63,29 @@ export class AppComponent implements OnInit {
     this.funcionarioService.excluiFuncionarios(funcionarioId).subscribe(
       (response: void) => {
         console.log(response);
-        this.buscaFuncionarios();
+        this.listaFuncionarios();
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
       }
     );
+  }
+
+  public buscaFuncionario(palavraChave: string): void {
+    const resultados: Funcionario[] = [];
+    for (const funcionario of this.funcionarios) {
+      if(funcionario.nome.toLowerCase().indexOf(palavraChave.toLowerCase()) !== -1
+      || funcionario.email.toLowerCase().indexOf(palavraChave.toLowerCase()) !== -1
+      || funcionario.telefone.toLowerCase().indexOf(palavraChave.toLowerCase()) !== -1
+      || funcionario.cargo.toLowerCase().indexOf(palavraChave.toLowerCase()) !== -1){
+        resultados.push(funcionario);
+      }
+    }
+    this.funcionarios = resultados;
+    if(resultados.length === 0 && !palavraChave){
+      this.listaFuncionarios();
+    }
+
   }
 
   public chamaAdicionarModal(): void {
@@ -93,7 +111,7 @@ export class AppComponent implements OnInit {
       button.setAttribute('data-target', '#editarModal');
     }
     if (mode === 'excluir'){
-      this.funcionarioId = funcionario.id;
+      this.funcionarioExcluido = funcionario;
       button.setAttribute('data-target', '#excluirModal');
     }
     container?.appendChild(button);
